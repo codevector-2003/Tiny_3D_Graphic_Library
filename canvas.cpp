@@ -1,5 +1,6 @@
 #include "canvas.h"
 #include <cmath>
+#include <algorithm>
 
 // --------------------
 // Canvas Constructor
