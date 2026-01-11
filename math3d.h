@@ -16,12 +16,27 @@ struct vec3_t
 
     void update_spherical();
     void update_cartesian();
+    void normalize_fast();
+    static vec3_t slerp(const vec3_t &a, const vec3_t &b, float t);
 };
 
-vec3_t vec3_from_spherical(float r, float theta, float phi);
+struct vec4
+{
+    float x, y, z, w;
+};
 
-vec3_t vec3_normalize_fast(const vec3_t &v);
+struct mat4
+{
+    float m[16]; // Column-major order
 
-vec3_t vec3_slerp(const vec3_t &a, const vec3_t &b, float t);
+    static mat4 identity();
+    static mat4 translation(float tx, float ty, float tz);
+    static mat4 rotation_xyz(float rx, float ry, float rz);
+    static mat4 scale(float sx, float sy, float sz);
+    static mat4 frustumAssymetric(float left, float right, float bottom, float top, float nearVal, float farVal);
+};
+
+mat4 multiply(const mat4 &a, const mat4 &b);
+vec3_t multiply(const mat4 &m, const vec3_t &v);
 
 #endif
