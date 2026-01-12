@@ -28,20 +28,25 @@ void ASCIIDisplay::show(const Canvas &canvas)
     COORD coord = {0, 0};
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
 
-    // Sample and display
-    int step_x = canvas.width / width;
-    int step_y = canvas.height / height;
+    // Calculate proper sampling steps
+    float step_x = (float)canvas.width / (float)width;
+    float step_y = (float)canvas.height / (float)height;
 
-    if (step_x < 1)
-        step_x = 1;
-    if (step_y < 1)
-        step_y = 1;
-
-    for (int y = 0; y < height && y * step_y < canvas.height; y++)
+    for (int y = 0; y < height; y++)
     {
-        for (int x = 0; x < width && x * step_x < canvas.width; x++)
+        for (int x = 0; x < width; x++)
         {
-            float intensity = canvas.pixels[y * step_y][x * step_x];
+            // Sample from canvas using proper interpolation
+            int canvas_x = (int)(x * step_x);
+            int canvas_y = (int)(y * step_y);
+
+            // Clamp to canvas bounds
+            if (canvas_x >= canvas.width)
+                canvas_x = canvas.width - 1;
+            if (canvas_y >= canvas.height)
+                canvas_y = canvas.height - 1;
+
+            float intensity = canvas.pixels[canvas_y][canvas_x];
 
             // Clamp and map to grayscale
             if (intensity < 0.0f)

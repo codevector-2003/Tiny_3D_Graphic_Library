@@ -10,6 +10,10 @@ A lightweight 3D graphics library written in C++ for rendering wireframe models 
 - **Animation System**: Bezier curves, time-based animations
 - **Canvas System**: Floating-point pixel rendering with bilinear filtering
 
+## Documentation
+
+For detailed documentation, see the [Tiny3D Graphics Driver PDF](libtiny3d/documentation/labtiny3d%20graphic%20driver.pdf).
+
 ## Project Structure
 
 ```

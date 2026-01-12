@@ -145,6 +145,8 @@ mat4 mat4::rotation_xyz(float rx, float ry, float rz)
     m.m[9] = sx * cy;
     m.m[10] = cx * cy;
 
+    m.m[15] = 1.0f; // CRITICAL: w component must be 1
+
     return m;
 }
 
@@ -190,7 +192,7 @@ vec4 multiply(const mat4 &m, const vec4 &v)
     return r;
 }
 
-vec3_t multiply(const mat4& m, const vec3_t& v)
+vec3_t multiply(const mat4 &m, const vec3_t &v)
 {
     // Treat vec3 as a POINT  w = 1
     float x = v.x;
@@ -200,15 +202,16 @@ vec3_t multiply(const mat4& m, const vec3_t& v)
 
     vec3_t r;
 
-    r.x = m.m[0]*x + m.m[4]*y + m.m[8]*z  + m.m[12]*w;
-    r.y = m.m[1]*x + m.m[5]*y + m.m[9]*z  + m.m[13]*w;
-    r.z = m.m[2]*x + m.m[6]*y + m.m[10]*z + m.m[14]*w;
+    r.x = m.m[0] * x + m.m[4] * y + m.m[8] * z + m.m[12] * w;
+    r.y = m.m[1] * x + m.m[5] * y + m.m[9] * z + m.m[13] * w;
+    r.z = m.m[2] * x + m.m[6] * y + m.m[10] * z + m.m[14] * w;
 
     // Compute resulting w (needed for projection)
-    float rw = m.m[3]*x + m.m[7]*y + m.m[11]*z + m.m[15]*w;
+    float rw = m.m[3] * x + m.m[7] * y + m.m[11] * z + m.m[15] * w;
 
     // Perspective divide if w changed (projection matrix)
-    if (rw != 0.0f && rw != 1.0f) {
+    if (rw != 1.0f && rw > 0.0001f)
+    {
         r.x /= rw;
         r.y /= rw;
         r.z /= rw;

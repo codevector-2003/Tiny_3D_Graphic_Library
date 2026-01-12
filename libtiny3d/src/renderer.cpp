@@ -98,20 +98,18 @@ void renderer_wireframe(
         }
     }
 
-    // Draw edges with circular clipping
-    int cx = screen_width / 2;
-    int cy = screen_height / 2;
-    int radius = (screen_width < screen_height
-                      ? screen_width
-                      : screen_height) /
-                 2;
-
+    // Draw edges with rectangular clipping (full screen)
     for (int i = 0; i < edge_count; ++i)
     {
         const Edge &e = edge_list[i];
 
-        if (clip_to_circular_viewport(cx, cy, radius, e.a.x, e.a.y) &&
-            clip_to_circular_viewport(cx, cy, radius, e.b.x, e.b.y))
+        // Simple bounds check - only draw if both points are reasonably on screen
+        bool a_visible = (e.a.x >= -100 && e.a.x < screen_width + 100 &&
+                          e.a.y >= -100 && e.a.y < screen_height + 100);
+        bool b_visible = (e.b.x >= -100 && e.b.x < screen_width + 100 &&
+                          e.b.y >= -100 && e.b.y < screen_height + 100);
+
+        if (a_visible || b_visible)
         {
             draw_line_f(
                 canvas,

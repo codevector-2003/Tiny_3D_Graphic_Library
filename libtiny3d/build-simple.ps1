@@ -43,7 +43,8 @@ $sources = @(
     "src/lighting.cpp",
     "src/math3d.cpp",
     "src/renderer.cpp",
-    "src/display.cpp"
+    "src/display.cpp",
+    "src/window_display.cpp"
 )
 
 $objects = @()
@@ -83,9 +84,19 @@ if ($compiler -eq "g++") {
         Write-Host "Demo built: build/bin/demo.exe" -ForegroundColor Green
     }
     
-    & g++ -std=c++17 -O2 -Iinclude demo/interactive.cpp build/lib/libtiny3d.a -o build/bin/interactive.exe
+    & g++ -std=c++17 -O2 -Iinclude demo/test1_lines.cpp build/lib/libtiny3d.a -lgdi32 -o build/bin/test1_lines.exe
     if ($LASTEXITCODE -eq 0) {
-        Write-Host "Interactive demo built: build/bin/interactive.exe" -ForegroundColor Green
+        Write-Host "Test 1 built: build/bin/test1_lines.exe" -ForegroundColor Green
+    }
+    
+    & g++ -std=c++17 -O2 -Iinclude demo/test2_3d_static.cpp build/lib/libtiny3d.a -lgdi32 -o build/bin/test2_3d_static.exe
+    if ($LASTEXITCODE -eq 0) {
+        Write-Host "Test 2 built: build/bin/test2_3d_static.exe" -ForegroundColor Green
+    }
+    
+    & g++ -std=c++17 -O2 -Iinclude demo/test3_3d_animated.cpp build/lib/libtiny3d.a -lgdi32 -o build/bin/test3_3d_animated.exe
+    if ($LASTEXITCODE -eq 0) {
+        Write-Host "Test 3 built: build/bin/test3_3d_animated.exe" -ForegroundColor Green
     }
     
     # Build tests
@@ -157,8 +168,15 @@ Write-Host "========================================" -ForegroundColor Green
 Write-Host "Build completed successfully!" -ForegroundColor Green
 Write-Host "========================================" -ForegroundColor Green
 Write-Host ""
-Write-Host "To run interactive demo (animated 3D objects):" -ForegroundColor Cyan
-Write-Host "  .\build\bin\interactive.exe" -ForegroundColor White
+Write-Host "Run tests in order:" -ForegroundColor Cyan
+Write-Host "  1. Test line drawing:" -ForegroundColor Yellow
+Write-Host "     .\build\bin\test1_lines.exe" -ForegroundColor White
+Write-Host ""
+Write-Host "  2. Test static 3D cube:" -ForegroundColor Yellow
+Write-Host "     .\build\bin\test2_3d_static.exe" -ForegroundColor White
+Write-Host ""
+Write-Host "  3. Test animated 3D cube:" -ForegroundColor Yellow
+Write-Host "     .\build\bin\test3_3d_animated.exe" -ForegroundColor White
 Write-Host ""
 Write-Host "To run static demo:" -ForegroundColor Cyan
 Write-Host "  .\build\bin\demo.exe" -ForegroundColor White
