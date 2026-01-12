@@ -10,18 +10,17 @@ Write-Host ""
 
 # Check for compilers
 $compiler = $null
-$isWindows = $true
 
 if (Get-Command g++ -ErrorAction SilentlyContinue) {
     $compiler = "g++"
-    Write-Host "✓ Found g++ compiler" -ForegroundColor Green
+    Write-Host "Found g++ compiler" -ForegroundColor Green
 }
 elseif (Get-Command cl -ErrorAction SilentlyContinue) {
     $compiler = "cl"
-    Write-Host "✓ Found MSVC compiler" -ForegroundColor Green
+    Write-Host "Found MSVC compiler" -ForegroundColor Green
 }
 else {
-    Write-Host "✗ No C++ compiler found!" -ForegroundColor Red
+    Write-Host "ERROR: No C++ compiler found!" -ForegroundColor Red
     Write-Host ""
     Write-Host "Please install one of:" -ForegroundColor Yellow
     Write-Host "  1. MinGW-w64: https://sourceforge.net/projects/mingw-w64/" -ForegroundColor White
@@ -43,7 +42,8 @@ $sources = @(
     "src/canvas.cpp",
     "src/lighting.cpp",
     "src/math3d.cpp",
-    "src/renderer.cpp"
+    "src/renderer.cpp",
+    "src/display.cpp"
 )
 
 $objects = @()
@@ -60,7 +60,7 @@ if ($compiler -eq "g++") {
         Write-Host "  Compiling: $src" -ForegroundColor Gray
         & g++ -std=c++17 -Wall -Wextra -O2 -Iinclude -c $src -o $obj
         if ($LASTEXITCODE -ne 0) {
-            Write-Host "✗ Compilation failed for $src" -ForegroundColor Red
+            Write-Host "Compilation failed for $src" -ForegroundColor Red
             exit 1
         }
     }
@@ -70,17 +70,22 @@ if ($compiler -eq "g++") {
     Write-Host "Creating static library..." -ForegroundColor Yellow
     & ar rcs build/lib/libtiny3d.a $objects
     if ($LASTEXITCODE -ne 0) {
-        Write-Host "✗ Library creation failed" -ForegroundColor Red
+        Write-Host "Library creation failed" -ForegroundColor Red
         exit 1
     }
-    Write-Host "✓ Library created: build/lib/libtiny3d.a" -ForegroundColor Green
+    Write-Host "Library created: build/lib/libtiny3d.a" -ForegroundColor Green
     
-    # Build demo
+    # Build demos
     Write-Host ""
-    Write-Host "Building demo..." -ForegroundColor Yellow
+    Write-Host "Building demos..." -ForegroundColor Yellow
     & g++ -std=c++17 -O2 -Iinclude demo/main.cpp build/lib/libtiny3d.a -o build/bin/demo.exe
     if ($LASTEXITCODE -eq 0) {
-        Write-Host "✓ Demo built: build/bin/demo.exe" -ForegroundColor Green
+        Write-Host "Demo built: build/bin/demo.exe" -ForegroundColor Green
+    }
+    
+    & g++ -std=c++17 -O2 -Iinclude demo/interactive.cpp build/lib/libtiny3d.a -o build/bin/interactive.exe
+    if ($LASTEXITCODE -eq 0) {
+        Write-Host "Interactive demo built: build/bin/interactive.exe" -ForegroundColor Green
     }
     
     # Build tests
@@ -88,12 +93,12 @@ if ($compiler -eq "g++") {
     Write-Host "Building tests..." -ForegroundColor Yellow
     & g++ -std=c++17 -O2 -Iinclude tests/test_animation.cpp build/lib/libtiny3d.a -o build/bin/test_animation.exe
     if ($LASTEXITCODE -eq 0) {
-        Write-Host "✓ Test built: build/bin/test_animation.exe" -ForegroundColor Green
+        Write-Host "Test built: build/bin/test_animation.exe" -ForegroundColor Green
     }
     
     & g++ -std=c++17 -O2 -Iinclude tests/test_math.cpp build/lib/libtiny3d.a -o build/bin/test_math.exe
     if ($LASTEXITCODE -eq 0) {
-        Write-Host "✓ Test built: build/bin/test_math.exe" -ForegroundColor Green
+        Write-Host "Test built: build/bin/test_math.exe" -ForegroundColor Green
     }
     
 }
@@ -105,7 +110,7 @@ elseif ($compiler -eq "cl") {
         Write-Host "  Compiling: $src" -ForegroundColor Gray
         & cl /std:c++17 /W4 /O2 /EHsc /Iinclude /c $src /Fo:$obj
         if ($LASTEXITCODE -ne 0) {
-            Write-Host "✗ Compilation failed for $src" -ForegroundColor Red
+            Write-Host "Compilation failed for $src" -ForegroundColor Red
             exit 1
         }
     }
@@ -115,17 +120,22 @@ elseif ($compiler -eq "cl") {
     Write-Host "Creating static library..." -ForegroundColor Yellow
     & lib /OUT:build/lib/tiny3d.lib $objects
     if ($LASTEXITCODE -ne 0) {
-        Write-Host "✗ Library creation failed" -ForegroundColor Red
+        Write-Host "Library creation failed" -ForegroundColor Red
         exit 1
     }
-    Write-Host "✓ Library created: build/lib/tiny3d.lib" -ForegroundColor Green
+    Write-Host "Library created: build/lib/tiny3d.lib" -ForegroundColor Green
     
-    # Build demo
+    # Build demos
     Write-Host ""
-    Write-Host "Building demo..." -ForegroundColor Yellow
+    Write-Host "Building demos..." -ForegroundColor Yellow
     & cl /std:c++17 /O2 /EHsc /Iinclude demo/main.cpp build/lib/tiny3d.lib /Fe:build/bin/demo.exe
     if ($LASTEXITCODE -eq 0) {
-        Write-Host "✓ Demo built: build/bin/demo.exe" -ForegroundColor Green
+        Write-Host "Demo built: build/bin/demo.exe" -ForegroundColor Green
+    }
+    
+    & cl /std:c++17 /O2 /EHsc /Iinclude demo/interactive.cpp build/lib/tiny3d.lib /Fe:build/bin/interactive.exe
+    if ($LASTEXITCODE -eq 0) {
+        Write-Host "Interactive demo built: build/bin/interactive.exe" -ForegroundColor Green
     }
     
     # Build tests
@@ -133,21 +143,24 @@ elseif ($compiler -eq "cl") {
     Write-Host "Building tests..." -ForegroundColor Yellow
     & cl /std:c++17 /O2 /EHsc /Iinclude tests/test_animation.cpp build/lib/tiny3d.lib /Fe:build/bin/test_animation.exe
     if ($LASTEXITCODE -eq 0) {
-        Write-Host "✓ Test built: build/bin/test_animation.exe" -ForegroundColor Green
+        Write-Host "Test built: build/bin/test_animation.exe" -ForegroundColor Green
     }
     
     & cl /std:c++17 /O2 /EHsc /Iinclude tests/test_math.cpp build/lib/tiny3d.lib /Fe:build/bin/test_math.exe
     if ($LASTEXITCODE -eq 0) {
-        Write-Host "✓ Test built: build/bin/test_math.exe" -ForegroundColor Green
+        Write-Host "Test built: build/bin/test_math.exe" -ForegroundColor Green
     }
 }
 
 Write-Host ""
 Write-Host "========================================" -ForegroundColor Green
-Write-Host "✓ Build completed successfully!" -ForegroundColor Green
+Write-Host "Build completed successfully!" -ForegroundColor Green
 Write-Host "========================================" -ForegroundColor Green
 Write-Host ""
-Write-Host "To run demo:" -ForegroundColor Cyan
+Write-Host "To run interactive demo (animated 3D objects):" -ForegroundColor Cyan
+Write-Host "  .\build\bin\interactive.exe" -ForegroundColor White
+Write-Host ""
+Write-Host "To run static demo:" -ForegroundColor Cyan
 Write-Host "  .\build\bin\demo.exe" -ForegroundColor White
 Write-Host ""
 Write-Host "To run tests:" -ForegroundColor Cyan

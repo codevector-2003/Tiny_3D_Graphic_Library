@@ -40,6 +40,7 @@ g++ -std=c++17 -Wall -Wextra -O2 -Iinclude -c src/canvas.cpp -o build/obj/canvas
 g++ -std=c++17 -Wall -Wextra -O2 -Iinclude -c src/lighting.cpp -o build/obj/lighting.o
 g++ -std=c++17 -Wall -Wextra -O2 -Iinclude -c src/math3d.cpp -o build/obj/math3d.o
 g++ -std=c++17 -Wall -Wextra -O2 -Iinclude -c src/renderer.cpp -o build/obj/renderer.o
+g++ -std=c++17 -Wall -Wextra -O2 -Iinclude -c src/display.cpp -o build/obj/display.o
 
 if %ERRORLEVEL% NEQ 0 (
     echo Compilation failed!
@@ -53,9 +54,11 @@ ar rcs build/lib/libtiny3d.a build/obj/*.o
 echo Library created: build/lib/libtiny3d.a
 
 echo.
-echo Building demo...
+echo Building demos...
 g++ -std=c++17 -O2 -Iinclude demo/main.cpp build/lib/libtiny3d.a -o build/bin/demo.exe
 echo Demo built: build/bin/demo.exe
+g++ -std=c++17 -O2 -Iinclude demo/interactive.cpp build/lib/libtiny3d.a -o build/bin/interactive.exe
+echo Interactive demo built: build/bin/interactive.exe
 
 echo.
 echo Building tests...
@@ -78,6 +81,7 @@ echo Compiling source files...
 cl /std:c++17 /W4 /O2 /EHsc /Iinclude /c src/animation.cpp /Fo:build/obj/animation.obj
 cl /std:c++17 /W4 /O2 /EHsc /Iinclude /c src/canvas.cpp /Fo:build/obj/canvas.obj
 cl /std:c++17 /W4 /O2 /EHsc /Iinclude /c src/lighting.cpp /Fo:build/obj/lighting.obj
+cl /std:c++17 /W4 /O2 /EHsc /Iinclude /c src/display.cpp /Fo:build/obj/display.obj
 cl /std:c++17 /W4 /O2 /EHsc /Iinclude /c src/math3d.cpp /Fo:build/obj/math3d.obj
 cl /std:c++17 /W4 /O2 /EHsc /Iinclude /c src/renderer.cpp /Fo:build/obj/renderer.obj
 
@@ -92,9 +96,11 @@ echo Creating static library...
 lib /OUT:build/lib/tiny3d.lib build/obj/*.obj
 echo Library created: build/lib/tiny3d.lib
 
-echo.
-echo Building demo...
+echo.s...
 cl /std:c++17 /O2 /EHsc /Iinclude demo/main.cpp build/lib/tiny3d.lib /Fe:build/bin/demo.exe
+echo Demo built: build/bin/demo.exe
+cl /std:c++17 /O2 /EHsc /Iinclude demo/interactive.cpp build/lib/tiny3d.lib /Fe:build/bin/interactive.exe
+echo Interactive demo built: build/bin/interactivede demo/main.cpp build/lib/tiny3d.lib /Fe:build/bin/demo.exe
 echo Demo built: build/bin/demo.exe
 
 echo.
@@ -108,7 +114,8 @@ goto :success
 :success
 echo.
 echo ========================================
-echo Build completed successfully!
+echo Build cinteractive demo: build\bin\interactive.exe
+echo To run static ompleted successfully!
 echo ========================================
 echo.
 echo To run demo: build\bin\demo.exe
