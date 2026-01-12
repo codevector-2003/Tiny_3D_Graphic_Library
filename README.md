@@ -34,12 +34,18 @@ For detailed documentation, see the [Tiny3D Graphics Driver PDF](libtiny3d/docum
 
 *Detailed chess king piece with octagonal base, crown with alternating points, and cross on top.*
 
+### Rotating Sphere Wireframe
+
+<video width="600" controls>
+  <source src="libtiny3d/Captures/sphere_animated.mp4" type="video/mp4">
+  Your browser does not support the video tag. <a href="libtiny3d/Captures/sphere_animated.mp4">Download video</a>
+</video>
+
+*3D sphere with latitude/longitude wireframe structure, smoothly rotating on Y-axis.*
+
 ### More Demo Videos
 
-- [F-22 Raptor Fighter Jet](libtiny3d/Captures/f22_fighter.mp4) - Fighter jet with detailed cockpit and vertical stabilizers
-- [3D Sphere Animation](libtiny3d/Captures/sphere_animated.mp4) - Rotating sphere wireframe
 - [Polyhedra Shapes](libtiny3d/Captures/polyhedra.mp4) - Tetrahedron and octahedron
-- [Animated 3D Cube](libtiny3d/Captures/cube_animated.mp4) - Rotating cube demonstration
 
 ### How to Record Demo Videos
 
