@@ -1,0 +1,22 @@
+# Build artifacts
+build/obj/
+build/lib/
+build/bin/
+*.o
+*.a
+*.exe
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Compiler outputs
+*.out
+a.out
