@@ -14,6 +14,43 @@ A lightweight 3D graphics library written in C++ for rendering wireframe models 
 
 For detailed documentation, see the [Tiny3D Graphics Driver PDF](libtiny3d/documentation/labtiny3d%20graphic%20driver.pdf).
 
+## Live Demo
+
+### Eiffel Tower Wireframe Animation
+
+<video width="600" controls>
+  <source src="libtiny3d/Captures/eiffel_tower.mp4" type="video/mp4">
+  Your browser does not support the video tag. <a href="libtiny3d/Captures/eiffel_tower.mp4">Download video</a>
+</video>
+
+*Detailed Eiffel Tower with extensive lattice structure and cross-bracing, rotating on Y-axis to showcase all features.*
+
+### Chess King Rotation
+
+<video width="600" controls>
+  <source src="libtiny3d/Captures/chess_king.mp4" type="video/mp4">
+  Your browser does not support the video tag. <a href="libtiny3d/Captures/chess_king.mp4">Download video</a>
+</video>
+
+*Detailed chess king piece with octagonal base, crown with alternating points, and cross on top.*
+
+### More Demo Videos
+
+- [F-22 Raptor Fighter Jet](libtiny3d/Captures/f22_fighter.mp4) - Fighter jet with detailed cockpit and vertical stabilizers
+- [3D Sphere Animation](libtiny3d/Captures/sphere_animated.mp4) - Rotating sphere wireframe
+- [Polyhedra Shapes](libtiny3d/Captures/polyhedra.mp4) - Tetrahedron and octahedron
+- [Animated 3D Cube](libtiny3d/Captures/cube_animated.mp4) - Rotating cube demonstration
+
+### How to Record Demo Videos
+
+1. Run any test program (e.g., `.\build\bin\test12_eiffel.exe`)
+2. Use screen recording software like:
+   - **Windows Game Bar** (Win + G)
+   - **OBS Studio** (free)
+   - **ShareX** (free)
+3. Save recordings as MP4 files in `libtiny3d/Captures/` folder
+4. Videos will display automatically in this README
+
 ## Project Structure
 
 ```
